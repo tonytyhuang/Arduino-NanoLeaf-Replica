@@ -4,39 +4,10 @@
 #include <BlynkSimpleEsp32.h>
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>
-#define PIN 27
-#define NUMPIXELS 150
-#define BLYNK_PRINT Serial
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
-
-// Function to test if wifi connection works
-#define WIFI_NETWORK "tcwhhome"
-#define WIFI_PASSWORD "twch1019"
-#define WIFI_TIMEOUT_MS 20000
-void connectToWifi(){
-  Serial.print("Connecting to Wifi");
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI_NETWORK, WIFI_PASSWORD);
-
-  unsigned long startAttemptTime = millis();
-
-  while(WiFi.status() != WL_CONNECTED && millis() - startAttemptTime < WIFI_TIMEOUT_MS){
-    Serial.print(".");
-    delay(100);
-  }
-
-  if(WiFi.status() != WL_CONNECTED){
-    Serial.println("Not connected to Wifi");
-  }else{
-    Serial.print("Connected!");
-    Serial.println(WiFi.localIP());
-  }
-}
+#include "Controller.h"
 
 
-
-// You should get Auth Token in the Blynk App.
-// Go to the Project Settings (nut icon).
+// Auth token for Blynk App
 char auth[] = "uOlz7fi1IpqMfFdIB-SipVfuRrBfbZSp";
 
 // Your WiFi credentials.
@@ -45,28 +16,28 @@ char ssid[] = "tcwhhome";
 char pass[] = "twch1019";
 
 
-BLYNK_WRITE(V2)
+std::shared_ptr<Nanoleaf> controller;
+
+BLYNK_WRITE(V1)
 {
   int R = param[0].asInt();
   int G = param[1].asInt();
   int B = param[2].asInt();
-  Serial.println(R);
-  Serial.println(G);
-  Serial.println(B);
-  for (int i = 0; i < NUMPIXELS; i++) {
+  controller->setColour(R,G,B);
+}
 
-    pixels.setPixelColor(i, pixels.Color(R, G, B));
-
-    pixels.show();
-  }
+BLYNK_WRITE(V2){
+  unsigned int data = param.asInt();
+  controller->setBright(data);
 }
 
 void setup()
 {
   // Debug console
   Serial.begin(9600);
-  Blynk.begin(auth, ssid, pass);
-    pixels.begin();                                                         
+  Blynk.begin(auth, ssid, pass); 
+  controller = std::make_shared<Nanoleaf> ();
+  controller->begin();                                                         
 }
 
 void loop()
