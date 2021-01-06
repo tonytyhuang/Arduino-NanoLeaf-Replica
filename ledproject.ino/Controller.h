@@ -16,7 +16,7 @@
 
 class Nanoleaf{
   Adafruit_NeoPixel pixels;
-
+  int colour[3];
   public:
   // Class constructor
   Nanoleaf();
