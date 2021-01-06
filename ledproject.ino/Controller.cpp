@@ -22,3 +22,7 @@ void Nanoleaf::setBright(unsigned int data){
   }
   showColour();
 }
+
+void Nanoleaf::begin(){
+    pixels.begin();
+  }

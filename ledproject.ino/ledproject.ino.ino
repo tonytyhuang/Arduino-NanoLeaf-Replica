@@ -31,6 +31,11 @@ BLYNK_WRITE(V2){
   controller->setBright(data);
 }
 
+BLYNK_WRITE(V3){
+  uint8_t pinValue = param.asInt();
+  
+}
+
 void setup()
 {
   // Debug console
