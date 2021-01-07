@@ -7,6 +7,6 @@ class Leaf{
     // Class Constructor
     Leaf();
     //
-}
+};
 
 #endif
