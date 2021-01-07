@@ -1,11 +1,9 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-//#include "Leaf.h"
+#include "Leaf.h"
 #include <Adafruit_NeoPixel.h>
 
-// Number of LEDS in each Nanoleaf
-#define LED_PER_BOX 18
 // Number of Nanoleaf
 #define NUM_LEAF 8
 // Pin that is connected
