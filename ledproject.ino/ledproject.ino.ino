@@ -48,20 +48,20 @@ BLYNK_WRITE(V4){
 
 // Setting minimum fade timing
 BLYNK_WRITE(V5){
-  uint16_t minTime = 1000 * param.asInt();
-
+  uint16_t minTime = 1000 * param.asInt(); 
+  controller->setMin(minTime);
 }
 
 // Setting maximum fade timing
 BLYNK_WRITE(V6){
   uint16_t maxTime = 1000 * param.asInt();
-
+  controller->setMax(maxTime);
 }
 
 // Setting randomness of hue
 BLYNK_WRITE(V7){
   uint8_t hueRand = 15 * param.asInt();
-
+  controller->setHue(hueRand);
 }
 
 void setup()

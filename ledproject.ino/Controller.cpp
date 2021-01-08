@@ -18,6 +18,9 @@ void Nanoleaf::begin(){
   }
 
 void Nanoleaf::showColour(){
+  for(int i = 0; i < NUMPIXELS; ++i){
+    pixels.setPixelColor(i, colour[0], colour[1], colour[2]);
+  }
   pixels.show();
 }
 
@@ -65,7 +68,7 @@ void Nanoleaf::setHue(uint8_t hue){
 void Nanoleaf::update(){
   if (!themeOn){
     if (effect == 1){
-      setColour(colour[0], colour[1], colour[2]);
+      showColour();
     }else if (effect == 2){
       for (int i = 0; i < NUM_LEAF; ++i){
         vecLeaf[i]->changeColour(pixels, random(minTime, maxTime));
