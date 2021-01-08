@@ -3,6 +3,8 @@
 
 #include "Leaf.h"
 #include <Adafruit_NeoPixel.h>
+#include <vector>
+#include <memory>
 
 // Number of Nanoleaf
 #define NUM_LEAF 8
@@ -13,6 +15,7 @@
 // declare variable to control LEDS
 
 class Nanoleaf{
+  std::vector<std::shared_ptr<Leaf>> vecLeaf;
   Adafruit_NeoPixel pixels;
   int colour[3];
   unsigned int bright;
@@ -43,6 +46,8 @@ class Nanoleaf{
   void setMax(uint16_t m);
   // setHue() sets the hue randomness of the lights
   void setHue(uint8_t hue);
+  // update() checks the state of the lights and runs everything accordingly
+  void update();
 };              
 
 

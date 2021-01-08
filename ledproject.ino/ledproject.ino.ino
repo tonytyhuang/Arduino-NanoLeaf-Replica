@@ -5,6 +5,7 @@
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>
 #include "Controller.h"
+#include <memory>
 
 
 // Auth token for Blynk App
@@ -75,4 +76,5 @@ void setup()
 void loop()
 {
   Blynk.run();
+  controller->update();
 }
