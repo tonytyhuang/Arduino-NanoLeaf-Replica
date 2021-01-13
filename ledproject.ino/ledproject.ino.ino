@@ -3,6 +3,7 @@
 #include <WiFiClient.h>
 #include <BlynkSimpleEsp32.h>
 #include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <SPI.h>
 #include "Controller.h"
 #include <memory>
@@ -25,7 +26,7 @@ BLYNK_WRITE(V1)
   int R = param[0].asInt();
   int G = param[1].asInt();
   int B = param[2].asInt();
-  controller->setColour(R,G,B);
+  controller->setColour(CRGB(R,G,B));
 }
 
 // Setting brightness
@@ -60,7 +61,7 @@ BLYNK_WRITE(V6){
 
 // Setting randomness of hue
 BLYNK_WRITE(V7){
-  uint8_t hueRand = 15 * param.asInt();
+  uint16_t hueRand = param.asInt();
   controller->setHue(hueRand);
 }
 
@@ -70,11 +71,10 @@ void setup()
   Serial.begin(9600);
   Blynk.begin(auth, ssid, pass); 
   controller = std::make_shared<Nanoleaf> ();
-  controller->begin();                                                         
+  controller->update();                                                       
 }
 
 void loop()
 {
   Blynk.run();
-  controller->update();
 }

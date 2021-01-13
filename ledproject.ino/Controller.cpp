@@ -1,7 +1,8 @@
 #include "Controller.h"
 
-Nanoleaf::Nanoleaf(): pixels{Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800)}, colour{49, 187, 217},
-bright{255}, effect{1}, theme{1}, minTime{0}, maxTime{0}, hueRand{0}, themeOn{false} {
+Nanoleaf::Nanoleaf(): colour{CRGB(49, 187, 217)}, time{0}, lastUpdate{0},
+bright{255}, effect{1}, theme{1}, minTime{3000}, maxTime{7000}, hueRand{50}, themeOn{false} {
+  FastLED.addLeds<WS2812B, PIN, GRB>(pixels, NUMPIXELS);
   for (int i = 0; i < NUM_LEAF; ++i){
     if (i == 0){
       vecLeaf.push_back(std::make_shared<Leaf> (0, 49, 187, 217));
@@ -13,32 +14,28 @@ bright{255}, effect{1}, theme{1}, minTime{0}, maxTime{0}, hueRand{0}, themeOn{fa
   }
 }
 
-void Nanoleaf::begin(){
-    pixels.begin();
-  }
 
 void Nanoleaf::showColour(){
   for(int i = 0; i < NUMPIXELS; ++i){
-    pixels.setPixelColor(i, colour[0], colour[1], colour[2]);
+    pixels[i] = colour;
   }
-  pixels.show();
+  FastLED.show();
 }
 
-void Nanoleaf::setColour(int r, int g, int b){
-  colour[0] = r;
-  colour[1] = g;
-  colour[2] = b;
+void Nanoleaf::setColour(CRGB input){
+  colour = input;
   for (int i = 0; i < NUM_LEAF; ++i){
-    vecLeaf[i]->setInput(r,g,b);
+    vecLeaf[i]->setInput(colour.red, colour.green, colour.blue);
+  }
+  update();
+  for(int i = 0; i < NUMPIXELS; ++i){
+    pixels[i] = colour;
   }
 }
 
 void Nanoleaf::setBright(unsigned int data){
   bright = data;
-  for (int i = 0; i < NUMPIXELS; i++){
-    pixels.setBrightness(data);
-  }
-  setColour(colour[0], colour[1], colour[2]);
+  FastLED.setBrightness(data);
   showColour();
 }
 
@@ -66,14 +63,27 @@ void Nanoleaf::setHue(uint8_t hue){
 }
 
 void Nanoleaf::update(){
-  if (!themeOn){
-    if (effect == 1){
-      showColour();
-    }else if (effect == 2){
-      for (int i = 0; i < NUM_LEAF; ++i){
-        vecLeaf[i]->changeColour(pixels, random(minTime, maxTime));
+  if (millis() - time > 3000){
+    if (!themeOn){
+      switch(effect){
+        case 1:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setStaticMode(pixels, colour);
+          }
+          break;
+        case 2:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setFadeTime(random(minTime, maxTime));
+            vecLeaf[i]->setHueMode(pixels);
+          }
       }
-      delay(minTime);
     }
+  }
+  // Update lights every 60 ms
+  if (millis() - lastUpdate > 60){
+    for (uint8_t i = 0; i < NUM_BOXES; i++)
+      int ret = nodes[i]->draw();
+      FastLED.show();
+      lastUpdate = millis();
   }
 }

@@ -2,7 +2,7 @@
 #define CONTROLLER_H
 
 #include "Leaf.h"
-#include <Adafruit_NeoPixel.h>
+#include <FastLED.h>
 #include <vector>
 #include <memory>
 
@@ -16,24 +16,24 @@
 
 class Nanoleaf{
   std::vector<std::shared_ptr<Leaf>> vecLeaf;
-  Adafruit_NeoPixel pixels;
-  int colour[3];
+  CRGB pixels[NUMPIXELS];
+  CRGB colour;
   unsigned int bright;
   uint8_t effect;
   uint8_t theme;
   uint16_t minTime;
   uint16_t maxTime;
-  uint8_t hueRand;
+  uint16_t hueRand;
   bool themeOn;
+  unsigned long time;
+  unsigned long lastUpdate;
   public:
   // Class constructor
   Nanoleaf();
-  // begin() begin the leds
-  void begin();
   //show colour
   void showColour();
   // setColour() sets the colour of the LEDS
-  void setColour(int r, int g, int b);
+  void setColour(CRGB input);
   // setBright() sets the brightness of the LEDS
   void setBright(unsigned int data);
   // setEffect() sets the effect used

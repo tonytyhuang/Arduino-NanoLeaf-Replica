@@ -18,16 +18,22 @@ class Leaf{
     int pixelNum;
     CHSV colorFrom;
     CHSV colorTo;
-    CHSV inputColour;
-    uint8_t hueRand;
+    CRGB inputColour;
+    uint16_t hueRand;
+    uint16_t fadeTime;
+    bool hue;
+    bool gradient;
+    bool gradFade;
     public:
     Leaf(int pix, int r, int g, int b);
-    void hueGenerate(Adafruit_NeoPixel pixels);
-    void changeColour(Adafruit_NeoPixel pixels, uint16_t time);
-    void fadeIn(Adafruit_NeoPixel pixels);
-    void fadeOut(Adafruit_NeoPixel pixels);
-    void setInput(int r, int g, int b);
+    void hueGenerate(CRGB leds);
+    void fadeIn(CRGB leds);
+    void fadeOut(CRGB leds);
+    void setFadeTime(uint16_t time);
+    void setInput(CRGB colour);
     void setHue(uint8_t hue);
+    void setStaticMode(CRGB leds, CRGB colour);
+    void setHueMode(CRGB leds, uint16_t time, bool set);
 };
 
 #endif
