@@ -16,6 +16,7 @@ struct hsv{
 
 class Leaf{
     int pixelNum;
+    CRGB pixels[150];
     CHSV colorFrom;
     CHSV colorTo;
     CRGB inputColour;
@@ -25,15 +26,15 @@ class Leaf{
     bool gradient;
     bool gradFade;
     public:
-    Leaf(int pix, int r, int g, int b);
-    void hueGenerate(CRGB leds);
-    void fadeIn(CRGB leds);
-    void fadeOut(CRGB leds);
+    Leaf(int pix, CRGB colour);
+    void hueGenerate();
+    void fadeIn();
+    void fadeOut();
     void setFadeTime(uint16_t time);
     void setInput(CRGB colour);
     void setHue(uint8_t hue);
-    void setStaticMode(CRGB leds, CRGB colour);
-    void setHueMode(CRGB leds);
+    void setStaticMode(CRGB colour);
+    void setHueMode();
     void update();
 };
 

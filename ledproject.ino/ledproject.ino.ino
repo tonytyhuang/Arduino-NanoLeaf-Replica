@@ -70,11 +70,11 @@ void setup()
   // Debug console
   Serial.begin(9600);
   Blynk.begin(auth, ssid, pass); 
-  controller = std::make_shared<Nanoleaf> ();
-  controller->update();                                                       
+  controller = std::make_shared<Nanoleaf> ();                                                     
 }
 
 void loop()
 {
   Blynk.run();
+  controller->update();
 }
