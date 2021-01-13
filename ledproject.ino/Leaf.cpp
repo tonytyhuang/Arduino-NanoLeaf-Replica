@@ -52,6 +52,9 @@ void Leaf::setStaticMode(CRGB colour){
     hue = false;
     gradient = false;
     gradFade = false;
+    for(int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
+      pixels[i] = colour;
+    }
 }
 
 void Leaf::setHueMode(){
