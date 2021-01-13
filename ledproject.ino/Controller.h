@@ -25,6 +25,7 @@ class Nanoleaf{
   uint16_t maxTime;
   uint16_t hueRand;
   bool themeOn;
+  bool updateNow;
   unsigned long time;
   unsigned long lastUpdate;
   public:

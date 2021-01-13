@@ -33,7 +33,8 @@ class Leaf{
     void setInput(CRGB colour);
     void setHue(uint8_t hue);
     void setStaticMode(CRGB leds, CRGB colour);
-    void setHueMode(CRGB leds, uint16_t time, bool set);
+    void setHueMode(CRGB leds);
+    void update();
 };
 
 #endif
