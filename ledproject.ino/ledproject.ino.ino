@@ -6,8 +6,10 @@
 #include <FastLED.h>
 #include <SPI.h>
 #include "Controller.h"
+#include "Leaf.h"
 #include <memory>
-
+// Number of Nanoleaf
+#define NUM_LEAF 8
 
 // Auth token for Blynk App
 char auth[] = "uOlz7fi1IpqMfFdIB-SipVfuRrBfbZSp";
@@ -69,8 +71,12 @@ void setup()
 {
   // Debug console
   Serial.begin(9600);
-  Blynk.begin(auth, ssid, pass); 
-  controller = std::make_shared<Nanoleaf> ();                                                     
+  controller = std::make_shared<Nanoleaf> ();
+  for (int i = 0; i < NUM_LEAF; ++i){
+    std::shared_ptr<Leaf> leaf(new Leaf(i*18, CRGB(49, 187, 217), controller));
+    controller->attachLeafs(leaf);
+  }
+  Blynk.begin(auth, ssid, pass);                                                    
 }
 
 void loop()

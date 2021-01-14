@@ -3,23 +3,26 @@
 Nanoleaf::Nanoleaf(): colour{CRGB(49, 187, 217)}, time{0}, lastUpdate{0}, updateNow{false},
 bright{255}, effect{1}, theme{1}, minTime{3000}, maxTime{7000}, hueRand{50}, themeOn{false} {
   FastLED.addLeds<WS2812B, PIN, GRB>(pixels, NUMPIXELS);
-  for (int i = 0; i < NUM_LEAF; ++i){
-    if (i == 0){
-      vecLeaf.push_back(std::make_shared<Leaf> (0, CRGB(49, 187, 217)));
-    }else if (i == 1){
-      vecLeaf.push_back(std::make_shared<Leaf> (23, CRGB(49, 187, 217)));
-    }else{
-      vecLeaf.push_back(std::make_shared<Leaf> (23 + ((i-1)*18), CRGB(49, 187, 217)));
-    }
-  }
+  // for (int i = 0; i < NUM_LEAF; ++i){
+  //   std::shared_ptr<Leaf> leaf(new Leaf(i*18, CRGB(49, 187, 217)));
+  //   vecLeaf.emplace_back(leaf);
+  // }
+}
+
+void Nanoleaf::attachLeafs(std::shared_ptr<Leaf> leaf){
+  vecLeaf.emplace_back(leaf);
 }
 
 
 void Nanoleaf::showColour(){
   for(int i = 0; i < NUMPIXELS; ++i){
-    pixels[i] = colour;
+    //pixels[i] = colour;
   }
   FastLED.show();
+}
+
+void Nanoleaf::setPixels(unsigned int i, CRGB colour){
+  pixels[i] = colour;
 }
 
 void Nanoleaf::setColour(CRGB input){
@@ -80,7 +83,6 @@ void Nanoleaf::update(){
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setStaticMode(colour);
           }
-          showColour();
           updateNow = false;
           break;
         case 2:
@@ -94,7 +96,7 @@ void Nanoleaf::update(){
         default:
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setStaticMode(colour);
-          }
+          } 
           updateNow = false;
           break;
       }
@@ -103,9 +105,10 @@ void Nanoleaf::update(){
   }
   // Update lights every 60 ms
   if (millis() - lastUpdate > 60){
-    for (uint8_t i = 0; i < NUM_LEAF; i++)
+    for (uint8_t i = 0; i < NUM_LEAF; i++){
        vecLeaf[i]->update();
-      FastLED.show();
-      lastUpdate = millis();
+    }
+    FastLED.show();
+    lastUpdate = millis();
   }
 }

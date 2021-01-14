@@ -1,8 +1,10 @@
 #include "Leaf.h"
 
-Leaf::Leaf(int pix, CRGB colour): pixelNum{pix}, hueRand{50}, inputColour{colour},
+Leaf::Leaf(int pix, CRGB colour, std::shared_ptr<Nanoleaf> &nano): pixelNum{pix}, hueRand{50}, inputColour{colour},
 colorFrom{rgb2hsv_approximate(colour)}, colorTo{rgb2hsv_approximate(colour)},
-fadeTime{0}, hue{false}, gradient{false}, gradFade{false} {}
+fadeTime{0}, hue{false}, gradient{false}, gradFade{false}, hueStartTime{0} {
+    nanoleaf = nano;
+}
 
 void Leaf::hueGenerate(){
     CHSV hsv = rgb2hsv_approximate(inputColour);
@@ -10,7 +12,7 @@ void Leaf::hueGenerate(){
     colorTo = hsv;
     for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
         CRGB light = hsv;
-        pixels[i] = light;
+        nanoleaf->setPixels(i, light);
     }
 }
 
@@ -18,9 +20,10 @@ void Leaf::fadeOut(){
     for (int i = colorFrom.val; i >= 1; --i){
         for (int j = pixelNum; j < pixelNum + LED_PER_BOX; ++j){
             CRGB light = CHSV(colorFrom.hue, colorFrom.sat, i);
-            pixels[j] = light;
+            nanoleaf->setPixels(i, light);
         }
         FastLED.show();
+        delay(10);
     }
 }
 
@@ -28,9 +31,10 @@ void Leaf::fadeIn(){
     for (int i = 1; i < colorTo.val; ++i){
         for (int j = pixelNum; j < pixelNum + LED_PER_BOX; ++j){
             CRGB light = CHSV(colorFrom.hue, colorFrom.sat, i);
-            pixels[j] = light;
+            nanoleaf->setPixels(i, light);
         }
         FastLED.show();
+        delay(10);
     }
 }
 
@@ -45,6 +49,7 @@ void Leaf::setInput(CRGB colour){
 
 void Leaf::setHue(uint8_t hue){
   hueRand = hue;
+  hue = true;
 }
 
 void Leaf::setStaticMode(CRGB colour){
@@ -53,18 +58,17 @@ void Leaf::setStaticMode(CRGB colour){
     gradient = false;
     gradFade = false;
     for(int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
-      pixels[i] = colour;
+        nanoleaf->setPixels(i, colour);
     }
 }
 
 void Leaf::setHueMode(){
-    hue = true;
-    unsigned long time = millis();
-    if (millis() - time >= fadeTime){
+    if (millis() - hueStartTime >= fadeTime){
         fadeOut();
         hueGenerate();
         fadeIn();
         colorFrom = colorTo;
+        hueStartTime = millis();
     }
 }
 

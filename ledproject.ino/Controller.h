@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+class Leaf;
+
 // Number of Nanoleaf
 #define NUM_LEAF 8
 // Pin that is connected
@@ -16,8 +18,8 @@
 
 class Nanoleaf{
   std::vector<std::shared_ptr<Leaf>> vecLeaf;
-  CRGB pixels[NUMPIXELS];
   CRGB colour;
+  CRGB pixels[NUMPIXELS];
   unsigned int bright;
   uint8_t effect;
   uint8_t theme;
@@ -31,8 +33,12 @@ class Nanoleaf{
   public:
   // Class constructor
   Nanoleaf();
-  //show colour
+  // attachLeafs() will attach leafs to nanoleaf
+  void attachLeafs(std::shared_ptr<Leaf> leaf);
+  // show colour
   void showColour();
+  // setPixel(i) sets the pixel colour
+  void setPixels(unsigned int i, CRGB colour);
   // setColour() sets the colour of the LEDS
   void setColour(CRGB input);
   // setBright() sets the brightness of the LEDS
