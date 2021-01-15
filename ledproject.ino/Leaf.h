@@ -34,6 +34,8 @@ class Leaf{
     CRGB inputColour;
     uint16_t hueRand;
     uint16_t fadeTime;
+    uint16_t fadeMin;
+    uint16_t fadeMax;
     bool hue;
     bool gradient;
     bool gradFade;
@@ -43,12 +45,12 @@ class Leaf{
     void hueGenerate();
     void fadeIn();
     void fadeOut();
-    void setFadeTime(uint16_t time);
+    void setFadeTime(uint16_t min, uint16_t max);
     void setInput(CRGB colour);
     void setHue(uint8_t hue);
     void setStaticMode(CRGB colour);
-    void setHueMode();
-    void update();
+    void setHueMode(unsigned long time);
+    void update(unsigned long time);
 };
 
 #endif

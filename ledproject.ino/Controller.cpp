@@ -88,8 +88,8 @@ void Nanoleaf::update(){
         case 2:
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setHue(hueRand);
-            vecLeaf[i]->setFadeTime(random(minTime, maxTime));
-            vecLeaf[i]->setHueMode();
+            vecLeaf[i]->setFadeTime(minTime, maxTime); 
+            vecLeaf[i]->setHueMode(millis());
           }
           updateNow = false;
           break;
@@ -106,7 +106,8 @@ void Nanoleaf::update(){
   // Update lights every 60 ms
   if (millis() - lastUpdate > 60){
     for (uint8_t i = 0; i < NUM_LEAF; i++){
-       vecLeaf[i]->update();
+       //vecLeaf[i]->update(millis());
+       vecLeaf[i]->setHueMode(millis());
     }
     FastLED.show();
     lastUpdate = millis();
