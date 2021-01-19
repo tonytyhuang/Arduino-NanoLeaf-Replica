@@ -13,9 +13,9 @@ void Leaf::hueGenerate(){
     CHSV colour = CHSV(hsv.hue + random(-hueRand / 2, hueRand / 2), hsv.sat, hsv.val);
     colorTo = colour;
     //CRGB light = colorTo;
-    for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
-         nanoleaf->setPixels(i, colorTo);
-    }
+//     for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
+//          nanoleaf->setPixels(i, colorTo);
+//     }
 }
 
 void Leaf::fadeOut(){
@@ -27,14 +27,14 @@ void Leaf::fadeOut(){
     //     FastLED.show();
     //     delay(10);
     // }
-   // int16_t r = colorFrom.r + ((float)(colorTo.r - colorFrom.r)/(10) * fadeInterval);
-    //int16_t g = colorFrom.g + ((float)(colorTo.g - colorFrom.g)/(10) * fadeInterval);
-    //int16_t b = colorFrom.b + ((float)(colorTo.b - colorFrom.b)/(10) * fadeInterval);
-    //CRGB light = CRGB(r, g, b);
-    //for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
-      //  nanoleaf->setPixels(i, light);
-    //}
-    //fadeInterval += 1;
+    int16_t r = colorFrom.r + ((float)(colorTo.r - colorFrom.r)/(10) * fadeInterval);
+    int16_t g = colorFrom.g + ((float)(colorTo.g - colorFrom.g)/(10) * fadeInterval);
+    int16_t b = colorFrom.b + ((float)(colorTo.b - colorFrom.b)/(10) * fadeInterval);
+    CRGB light = CRGB(0, 0, 0);
+    for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
+       nanoleaf->setPixels(i, light);
+    }
+    fadeInterval += 1;
 }
 
 void Leaf::fadeIn(){
@@ -98,14 +98,16 @@ void Leaf::setHueMode(unsigned long time){
 void Leaf::update(unsigned long time){
     if (hue){
         setHueMode(time);
-        // if (fade){
-        //     if (time - fadeTimer >= 1000){
-        //         colorFrom = colorTo;
-        //         fade = false;
-        //     }else{
-        //         fadeIn();
-        //         //fadeOut();
-        //     }
-        // }
+        if (fade){
+            if (time - fadeTimer >= 1000){
+                colorFrom = colorTo;
+                fade = false;
+                fadeInterval = 1;
+                fadeIn();
+            }else{
+                //fadeIn();
+                fadeOut();
+            }
+        }
     }
 }
