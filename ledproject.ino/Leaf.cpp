@@ -2,7 +2,7 @@
 
 Leaf::Leaf(int pix, CRGB colour, std::shared_ptr<Nanoleaf> &nano): 
 pixelNum{pix},
-inputColour{colour}, colorFrom{rgb2hsv_approximate(colour)}, colorTo{rgb2hsv_approximate(colour)},
+inputColour{colour}, colorFrom{colour}, colorTo{colour},
 hueRand{100}, fade{false}, colourMin{3000}, colourMax{7000}, colourTime{0}, hueStartTime{0}, fadeTimer{0}, fadeInterval{1},
 hue{false}, gradient{false}, gradFade{false} {
     nanoleaf = nano;
@@ -12,7 +12,7 @@ void Leaf::hueGenerate(){
     CHSV hsv = rgb2hsv_approximate(inputColour);
     CHSV colour = CHSV(hsv.hue + random(-hueRand / 2, hueRand / 2), hsv.sat, hsv.val);
     colorTo = colour;
-    CRGB light = colorTo;
+    //CRGB light = colorTo;
     for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
          nanoleaf->setPixels(i, colorTo);
     }
@@ -59,7 +59,7 @@ void Leaf::setColourTime(uint16_t min, uint16_t max){
 
 void Leaf::setInput(CRGB colour){
     inputColour = colour;
-    colorFrom = rgb2hsv_approximate(colour);
+    colorFrom = colour;
 }
 
 void Leaf::setHue(uint8_t hueInp){

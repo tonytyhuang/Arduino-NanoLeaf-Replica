@@ -29,8 +29,8 @@ struct hsv{
 class Leaf{
     int pixelNum;
     std::shared_ptr<Nanoleaf> nanoleaf;
-    CHSV colorFrom;
-    CHSV colorTo;
+    CRGB colorFrom;
+    CRGB colorTo;
     CRGB inputColour;
     int fadeInterval;
     uint16_t hueRand;
