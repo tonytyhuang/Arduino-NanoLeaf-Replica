@@ -15,10 +15,6 @@ void Nanoleaf::attachLeafs(std::shared_ptr<Leaf> leaf){
 
 
 void Nanoleaf::showColour(){
-  for(int i = 0; i < NUMPIXELS; ++i){
-    //pixels[i] = colour;
-  }
-  FastLED.show();
 }
 
 void Nanoleaf::setPixels(unsigned int i, CRGB colour){
@@ -38,7 +34,7 @@ void Nanoleaf::setBright(unsigned int data){
   bright = data;
   if (effect == 1){
     FastLED.setBrightness(data);
-    showColour();
+    FastLED.show();
   }
 }
 
@@ -88,7 +84,7 @@ void Nanoleaf::update(){
         case 2:
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setHue(hueRand);
-            vecLeaf[i]->setFadeTime(minTime, maxTime); 
+            vecLeaf[i]->setColourTime(minTime, maxTime); 
             vecLeaf[i]->setHueMode(millis());
           }
           updateNow = false;
@@ -103,11 +99,10 @@ void Nanoleaf::update(){
     }
     time = millis();
   }
-  // Update lights every 60 ms
-  if (millis() - lastUpdate > 60){
+  // Update lights every 100 ms
+  if (millis() - lastUpdate > 100){
     for (uint8_t i = 0; i < NUM_LEAF; i++){
-       //vecLeaf[i]->update(millis());
-       vecLeaf[i]->setHueMode(millis());
+       vecLeaf[i]->update(millis());
     }
     FastLED.show();
     lastUpdate = millis();
