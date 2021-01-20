@@ -3,10 +3,9 @@
 Nanoleaf::Nanoleaf(): colour{CRGB(49, 187, 217)}, time{0}, lastUpdate{0}, updateNow{false},
 bright{255}, effect{1}, theme{1}, minTime{3000}, maxTime{7000}, hueRand{50}, themeOn{false} {
   FastLED.addLeds<WS2812B, PIN, GRB>(pixels, NUMPIXELS);
-  // for (int i = 0; i < NUM_LEAF; ++i){
-  //   std::shared_ptr<Leaf> leaf(new Leaf(i*18, CRGB(49, 187, 217)));
-  //   vecLeaf.emplace_back(leaf);
-  // }
+  for(int i = 0; i < NUMPIXELS; ++i){
+    setPixels(i, colour);
+    }
 }
 
 void Nanoleaf::attachLeafs(std::shared_ptr<Leaf> leaf){
