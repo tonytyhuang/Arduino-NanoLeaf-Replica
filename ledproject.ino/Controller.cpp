@@ -88,6 +88,12 @@ void Nanoleaf::update(){
           }
           updateNow = false;
           break;
+        case 3:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setColourGradientMode();
+          }
+          updateNow = false;
+          break;
         default:
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setStaticMode(colour);
@@ -99,7 +105,7 @@ void Nanoleaf::update(){
     time = millis();
   }
   // Update lights every 100 ms
-  if (millis() - lastUpdate > 100){
+  if (millis() - lastUpdate > 50){
     for (uint8_t i = 0; i < NUM_LEAF; i++){
        vecLeaf[i]->update(millis());
     }
