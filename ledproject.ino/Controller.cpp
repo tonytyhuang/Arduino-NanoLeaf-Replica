@@ -94,6 +94,12 @@ void Nanoleaf::update(){
           }
           updateNow = false;
           break;
+        case 4:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setHueGradientMode();
+          }
+          updateNow = false;
+          break;
         default:
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setStaticMode(colour);

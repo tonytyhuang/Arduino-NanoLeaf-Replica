@@ -56,6 +56,7 @@ class Leaf{
     void setInput(CRGB colour);
     void setHue(uint8_t hueInp);
     void setColourGradientMode();
+    void setHueGradientMode();
     void setStaticMode(CRGB colour);
     void setHueMode(unsigned long time);
     void update(unsigned long time);

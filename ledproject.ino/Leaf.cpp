@@ -98,6 +98,37 @@ void Leaf::setColourGradientMode(){
     }
 }
 
+void Leaf::setHueGradientMode(){
+    hue = false;
+    colourGrad = false;
+    hueGrad = true;
+    uint16_t leafNum;
+    if (pixelNum == 0 || pixelNum == 18){
+        leafNum = 0;
+    }else if (pixelNum == 36 || pixelNum == 54){
+        leafNum = 1;
+    }else if (pixelNum == 72 || pixelNum == 90){
+        leafNum = 2;
+    }else if (pixelNum == 108 || pixelNum == 126){
+        leafNum = 3;
+    }
+    CHSV hsv = rgb2hsv_approximate(inputColour);
+    if (hsv.hue > 235){
+        hsv.hue += -60 + (leafNum * 20);
+    }else if (hsv.hue > 215){
+        hsv.hue += -40 + (leafNum * 20);
+    }else if (hsv.hue < 20){
+        hsv.hue += (leafNum * 20);
+    }else{
+        hsv.hue += -20 + (leafNum * 20);
+    }
+    CHSV colour = CHSV(hsv.hue, hsv.sat, hsv.val);
+    colorFrom = colour;
+    for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
+        nanoleaf->setPixels(i, colorFrom);
+    }
+}
+
 void Leaf::gradFadeIn(){
   CHSV hsv = rgb2hsv_approximate(colorFrom);
   hsv.val = 255 - (5 * gradFadeInt);
@@ -128,7 +159,7 @@ void Leaf::update(unsigned long time){
                 fadeOut();
             }
         }
-    }else if (colourGrad){
+    }else if (colourGrad || hueGrad){
       if (time - gradTimer >= 10000){
         if (gradFadeInt <= 40){
           gradFadeIn();
