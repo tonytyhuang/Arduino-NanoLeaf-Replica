@@ -45,8 +45,10 @@ void Nanoleaf::setEffect(uint8_t eff){
 
 void Nanoleaf::setTheme(uint8_t t){
   theme = t;
-  if (t == 2 && t == 3){
+  if (t == 2 || t == 3){
     themeOn = true;
+  }else{
+    themeOn = false;
   }
   updateNow = true;
   lastUpdate = 0;
@@ -104,6 +106,30 @@ void Nanoleaf::update(){
           for (uint8_t i = 0; i < NUM_LEAF; i++){
             vecLeaf[i]->setStaticMode(colour);
           } 
+          updateNow = false;
+          break;
+      }
+    }else{
+      switch(theme){
+        case 2:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setThemeNum(2);
+            vecLeaf[i]->setThemeColour(millis());
+          }
+          updateNow = false;
+          break;
+        case 3:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setThemeNum(3);
+            vecLeaf[i]->setThemeColour(millis());
+          }
+          updateNow = false;
+          break;
+        default:
+          for (uint8_t i = 0; i < NUM_LEAF; i++){
+            vecLeaf[i]->setThemeNum(2);
+            vecLeaf[i]->setThemeColour(millis());
+          }
           updateNow = false;
           break;
       }

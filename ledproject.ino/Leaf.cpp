@@ -4,7 +4,7 @@ Leaf::Leaf(int pix, CRGB colour, std::shared_ptr<Nanoleaf> &nano):
 pixelNum{pix},
 inputColour{colour}, colorFrom{colour}, colorTo{colour}, gradFadeInt{1},
 hueRand{100}, fade{false}, colourMin{3000}, colourMax{7000}, colourTime{0}, hueStartTime{0}, fadeTimer{0}, fadeInterval{1},
-hue{false}, colourGrad{false}, hueGrad{false}, gradTimer{0} {
+hue{false}, colourGrad{false}, hueGrad{false}, theme{false}, gradTimer{0} {
     nanoleaf = nano;
 }
 
@@ -52,6 +52,30 @@ void Leaf::setHue(uint8_t hueInp){
   hue = true;
   colourGrad = false;
   hueGrad = false;
+  theme = false;
+}
+
+void Leaf::setThemeNum(uint8_t effect){
+  themeNum = effect;
+}
+
+void Leaf::setThemeColour(unsigned long time){
+    hue = false;
+    colourGrad = false;
+    hueGrad = false;
+    theme = true;
+    if (time - hueStartTime >= colourTime){
+        if (themeNum == 2){
+            colorTo = winterArr[rand()%6];
+        }else if (themeNum == 3){
+            colorTo = beachArr[rand()%6];
+            //colorFrom = beachArr[0];
+        }
+        colourTime = random(colourMin, colourMax);
+        hueStartTime = time;
+        fade = true;
+        fadeTimer = time;
+    }
 }
 
 void Leaf::setStaticMode(CRGB colour){
@@ -60,6 +84,7 @@ void Leaf::setStaticMode(CRGB colour){
     colourGrad = false;
     colorFrom = colour;
     hueGrad = false;
+    theme = false;
     for(int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
         nanoleaf->setPixels(i, inputColour);
     }
@@ -79,6 +104,7 @@ void Leaf::setColourGradientMode(){
     hue = false;
     colourGrad = true;
     hueGrad = false;
+    theme = false;
     CHSV hsv = rgb2hsv_approximate(inputColour);
     uint16_t leafNum;
     if (pixelNum == 0 || pixelNum == 18){
@@ -102,6 +128,7 @@ void Leaf::setHueGradientMode(){
     hue = false;
     colourGrad = false;
     hueGrad = true;
+    theme = false;
     uint16_t leafNum;
     if (pixelNum == 0 || pixelNum == 18){
         leafNum = 0;
@@ -170,5 +197,14 @@ void Leaf::update(unsigned long time){
           gradFadeInt = 1;
         }
       }
+    }else if (theme){
+        setThemeColour(time);
+        if (fade){
+            if (time - fadeTimer >= 1500){
+                fadeIn();
+            }else{
+                fadeOut();
+            }
+        }
     }
 }
