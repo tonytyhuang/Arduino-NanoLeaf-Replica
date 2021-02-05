@@ -71,16 +71,20 @@ void setup()
 {
   // Debug console
   Serial.begin(9600);
+  // Creating controller object
   controller = std::make_shared<Nanoleaf> ();
+  // Creating individual leaf objects
   for (int i = 0; i < NUM_LEAF; ++i){
     std::shared_ptr<Leaf> leaf(new Leaf(i*18, CRGB(49, 187, 217), controller));
     controller->attachLeafs(leaf);
   }
+  // Starting Blynk
   Blynk.begin(auth, ssid, pass);                                                    
 }
 
 void loop()
 {
   Blynk.run();
+  // Calling update function of controller
   controller->update();
 }

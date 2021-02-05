@@ -12,10 +12,6 @@ void Nanoleaf::attachLeafs(std::shared_ptr<Leaf> leaf){
   vecLeaf.emplace_back(leaf);
 }
 
-
-void Nanoleaf::showColour(){
-}
-
 void Nanoleaf::setPixels(unsigned int i, CRGB colour){
   pixels[i] = colour;
 }

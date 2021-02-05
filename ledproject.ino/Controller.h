@@ -13,7 +13,7 @@ class Leaf;
 // Pin that is connected
 #define PIN 27
 // Total number of LEDS
-#define NUMPIXELS 150
+#define NUMPIXELS 144
 // declare variable to control LEDS
 
 class Nanoleaf{
@@ -35,8 +35,6 @@ class Nanoleaf{
   Nanoleaf();
   // attachLeafs() will attach leafs to nanoleaf
   void attachLeafs(std::shared_ptr<Leaf> leaf);
-  // show colour
-  void showColour();
   // setPixel(i) sets the pixel colour
   void setPixels(unsigned int i, CRGB colour);
   // setColour() sets the colour of the LEDS

@@ -2,7 +2,7 @@
 
 Leaf::Leaf(int pix, CRGB colour, std::shared_ptr<Nanoleaf> &nano): 
 pixelNum{pix},
-inputColour{colour}, colorFrom{colour}, colorTo{colour}, gradFadeInt{1},
+inputColour{colour}, colorFrom{colour}, colorTo{colour}, gradsetColourt{1},
 hueRand{100}, fade{false}, colourMin{3000}, colourMax{7000}, colourTime{0}, hueStartTime{0}, fadeTimer{0}, fadeInterval{1},
 hue{false}, colourGrad{false}, hueGrad{false}, theme{false}, gradTimer{0} {
     nanoleaf = nano;
@@ -14,7 +14,7 @@ void Leaf::hueGenerate(){
     colorTo = colour;
 }
 
-void Leaf::fadeOut(){
+void Leaf::fadeColour(){
     float red = ((colorTo.r - colorFrom.r)/(30)) * fadeInterval;
     float green = ((colorTo.g - colorFrom.g)/(30)) * fadeInterval;
     float blue = ((colorTo.b - colorFrom.b)/(30)) * fadeInterval;
@@ -29,7 +29,7 @@ void Leaf::fadeOut(){
     fadeInterval += 1;
 }
 
-void Leaf::fadeIn(){
+void Leaf::setNew(){
     for (int i = pixelNum; i < pixelNum + LED_PER_BOX; ++i){
         nanoleaf->setPixels(i, colorTo);
     }
@@ -181,9 +181,9 @@ void Leaf::update(unsigned long time){
         setHueMode(time);
         if (fade){
             if (time - fadeTimer >= 1500){
-                fadeIn();
+                setNew();
             }else{
-                fadeOut();
+                fadeColour();
             }
         }
     }else if (colourGrad || hueGrad){
@@ -201,9 +201,9 @@ void Leaf::update(unsigned long time){
         setThemeColour(time);
         if (fade){
             if (time - fadeTimer >= 1500){
-                fadeIn();
+                setNew();
             }else{
-                fadeOut();
+                fadeColour();
             }
         }
     }
