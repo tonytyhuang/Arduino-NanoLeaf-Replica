@@ -18,12 +18,6 @@ class Nanoleaf;
 // Pin that is connected
 #define PIN 27
 
-struct hsv{
-        int h;
-        int s;
-        int v;
-    };
-
 class Leaf{
     int pixelNum;
     std::shared_ptr<Nanoleaf> nanoleaf;
