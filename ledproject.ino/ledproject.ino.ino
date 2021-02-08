@@ -12,12 +12,12 @@
 #define NUM_LEAF 8
 
 // Auth token for Blynk App
-char auth[] = "uOlz7fi1IpqMfFdIB-SipVfuRrBfbZSp";
+char auth[] = "";
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-char ssid[] = "tcwhhome";
-char pass[] = "twch1019";
+char ssid[] = "";
+char pass[] = "";
 
 
 std::shared_ptr<Nanoleaf> controller;
