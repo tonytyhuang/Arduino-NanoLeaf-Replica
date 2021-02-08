@@ -3,7 +3,7 @@
 I decided to create a replica of the Nanoleaf by connecting individually addressable LEDS to an ESP32 arduino board and controlling it through the code I wrote interacting with the Blynk App giving access to controlling the lights through WiFi.
 
 # Watch my video!
-https://www.youtube.com/channel/UCd9BPDd0sBo9B6KTBPi5G3g
+https://www.youtube.com/watch?v=9F8-3xiVmeo&t=54s&ab_channel=TonyHuang
 
 # UML Diagram of my classes:
 
